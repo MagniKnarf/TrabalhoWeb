@@ -3,20 +3,19 @@ let authToken = "";
 let currentIndex = 1;
 const totalRecords = 105;
 
-// Elementos
 const albumGrid = $("#album-grid");
 const loadingIndicator = $("#loading");
 
-// Mostrar e ocultar o loading durante requisições
+//loading
 $(document).ajaxStart(function () {
-  loadingIndicator.show(); // Exibir o indicador de loading ao iniciar requisições
+  loadingIndicator.show();
 });
 
 $(document).ajaxStop(function () {
-  loadingIndicator.hide(); // Ocultar o indicador de loading ao finalizar todas as requisições
+  loadingIndicator.hide();
 });
 
-// Autenticar e obter token
+// Autenticação
 function authenticate() {
   return $.ajax({
     url: "https://ucsdiscosapi.azurewebsites.net/Discos/autenticar",
@@ -33,7 +32,7 @@ function authenticate() {
   });
 }
 
-// Carregar registros de discos
+// Carrega registros de discos
 function loadRecords(startIndex, quantity) {
   return $.ajax({
     url: `https://ucsdiscosapi.azurewebsites.net/Discos/records?numeroInicio=${startIndex}&quantidade=${quantity}`,
@@ -50,7 +49,7 @@ function loadRecords(startIndex, quantity) {
   });
 }
 
-// Criar elemento de card para cada disco
+// Cria elemento card para cada disco
 function createAlbumCard(record) {
   const col = $(`
     <div class="col">
@@ -64,7 +63,6 @@ function createAlbumCard(record) {
   });
 }
 
-// Exibir detalhes no modal
 function showAlbumDetails(id) {
   return $.ajax({
     url: `https://ucsdiscosapi.azurewebsites.net/Discos/record?numero=${id}`,
@@ -72,14 +70,12 @@ function showAlbumDetails(id) {
     headers: {
       tokenapiucs: authToken,
     },
-    success: function (record) {
-      // Preencher modal
+    success: function (record) {      
       $("#modalTitle").text(`Álbum ${record.id}`);
       $("#modalImage").attr("src", `data:image/jpeg;base64,${record.imagemEmBase64}`);
       $("#modalDescriptionPrimary").text(record.descricaoPrimaria);
       $("#modalDescriptionSecondary").text(record.descricaoSecundaria);
 
-      // Mostrar modal
       const modal = new bootstrap.Modal($("#albumModal")[0]);
       modal.show();
     },
@@ -89,16 +85,16 @@ function showAlbumDetails(id) {
   });
 }
 
-// Inicializar a aplicação
+
 function init() {
   authenticate().then(() => {
     loadRecords(currentIndex, 12);
 
-    // Implementar rolagem infinita
+    //rolagem infinita
     $(window).on("scroll", function () {
       if ($(window).scrollTop() + $(window).height() >= $(document).height()) {
         currentIndex += 4;
-        if (currentIndex > totalRecords) currentIndex = 1; // Reiniciar
+        if (currentIndex > totalRecords) currentIndex = 1;
         loadRecords(currentIndex, 4);
       }
     });
