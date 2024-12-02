@@ -89,15 +89,14 @@ function showAlbumDetails(id) {
 
 function init() {
   authenticate().then(() => {
-    loadRecords(currentIndex, 12).then(() => {
-      isFirstLoad = false;
-    });
+    loadRecords(currentIndex, 12);
 
     // Rolagem infinita
     $(window).on("scroll", function () {
       if ($(window).scrollTop() + $(window).height() >= $(document).height()) {
         if (isFirstLoad) {
           currentIndex = 13;
+          isFirstLoad = false;
         } else {
           currentIndex += 4;
         }
