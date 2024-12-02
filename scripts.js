@@ -27,7 +27,7 @@ function authenticate() {
       authToken = data;
     },
     error: function () {
-      console.error("Erro ao autenticar.");
+      alert("Erro ao autenticar.");
     },
   });
 }
@@ -44,7 +44,7 @@ function loadRecords(startIndex, quantity) {
       records.forEach(createAlbumCard);
     },
     error: function () {
-      console.error("Erro ao carregar registros.");
+      alert("Erro ao carregar registros.");
     },
   });
 }
@@ -80,7 +80,7 @@ function showAlbumDetails(id) {
       modal.show();
     },
     error: function () {
-      console.error("Erro ao carregar detalhes do disco.");
+      alert("Erro ao carregar detalhes do disco.");
     },
   });
 }
