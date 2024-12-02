@@ -6,7 +6,7 @@ const totalRecords = 105;
 const albumGrid = $("#album-grid");
 const loadingIndicator = $("#loading");
 
-//loading
+// Loading
 $(document).ajaxStart(function () {
   loadingIndicator.show();
 });
@@ -90,10 +90,12 @@ function init() {
   authenticate().then(() => {
     loadRecords(currentIndex, 12);
 
-    //rolagem infinita
+    // Rolagem infinita
     $(window).on("scroll", function () {
       if ($(window).scrollTop() + $(window).height() >= $(document).height()) {
-        currentIndex += 4;
+        const loadedRecords = albumGrid.children().length; 
+        currentIndex = loadedRecords + 1;
+    
         if (currentIndex > totalRecords) currentIndex = 1;
         loadRecords(currentIndex, 4);
       }
