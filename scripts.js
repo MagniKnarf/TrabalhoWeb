@@ -2,6 +2,7 @@ const apiKey = "8175fA5f6098c5301022f475da32a2aa";
 let authToken = "";
 let currentIndex = 1;
 const totalRecords = 105;
+let isFirstLoad = true;
 
 const albumGrid = $("#album-grid");
 const loadingIndicator = $("#loading");
@@ -88,19 +89,25 @@ function showAlbumDetails(id) {
 
 function init() {
   authenticate().then(() => {
-    loadRecords(currentIndex, 12);
+    loadRecords(currentIndex, 12).then(() => {
+      isFirstLoad = false;
+    });
 
     // Rolagem infinita
     $(window).on("scroll", function () {
       if ($(window).scrollTop() + $(window).height() >= $(document).height()) {
-        const loadedRecords = albumGrid.children().length; 
-        currentIndex = loadedRecords + 1;
-    
+        if (isFirstLoad) {
+          currentIndex = 13;
+        } else {
+          currentIndex += 4;
+        }
+
         if (currentIndex > totalRecords) currentIndex = 1;
         loadRecords(currentIndex, 4);
       }
     });
   });
 }
+
 
 $(document).ready(init);
