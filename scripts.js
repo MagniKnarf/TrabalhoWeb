@@ -45,7 +45,7 @@ function loadRecords(startIndex, quantity) {
       records.forEach(createAlbumCard);
     },
     error: function () {
-      alert("Erro ao carregar registros.");
+      console.log("Erro ao carregar registros.");
     },
   });
 }
